@@ -30,11 +30,8 @@ struct WeatherManager {
     }
     
     func performRequest(urlString: String) {
-        // Create URL
         if let url = URL(string: urlString) {
-            // Create seassion
             let session = URLSession(configuration: .default)
-            // Give the session a task
             let task = session.dataTask(with: url) { data, response, error in
                 if error != nil {
                     self.delegate?.didFailWithError(error: error!)
@@ -47,22 +44,19 @@ struct WeatherManager {
                     }
                 }
             }
-            // Start
-            task.resume()
             
+            task.resume()
         }
     }
     
     func parseJSON(_ weatherData: Data) -> WeatherModel? {
         let decoder = JSONDecoder()
         do {
-            let decodeData = try decoder.decode(WeatherData.self, from: weatherData )
-            let id = decodeData.weather[0].id
+            let decodeData = try decoder.decode(WeatherData.self, from: weatherData)
+            let id = decodeData.weather.first?.id ?? 0
             let temp = decodeData.main.temp
             let name = decodeData.name
-            let weather = WeatherModel(conditionId: id, cityName: name, temperature: temp)
-            
-            return weather
+            return WeatherModel(conditionId: id, cityName: name, temperature: temp)
         } catch {
             delegate?.didFailWithError(error: error)
             return nil

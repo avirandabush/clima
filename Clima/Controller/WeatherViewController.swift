@@ -22,7 +22,6 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Ask and get user location
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
@@ -61,7 +60,6 @@ extension WeatherViewController: UITextFieldDelegate {
         }
     }
     
-    // Clear text field when you done
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if let city = searchTextField.text {
@@ -82,7 +80,6 @@ extension WeatherViewController: WeatherManagerDelegate {
             self.conditionImageView.image = UIImage(systemName: weather.conditionName)
             self.cityLabel.text = weather.cityName
         }
-        
     }
     
     func didFailWithError(error: Error) {
